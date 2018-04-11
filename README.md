@@ -1,4 +1,8 @@
 # lxmpbox
+[![Build Status](https://travis-ci.org/davideugenepratt/lxmpbox.svg?branch=master)](https://travis-ci.org/davideugenepratt/lxmpbox)
 
-TODO: Enter the cookbook description here.
+### Linux
+### Apache or Nginx
+### Mysql
+### Php
 
