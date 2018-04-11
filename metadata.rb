@@ -1,20 +1,11 @@
 name 'lxmpbox'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'David Eugene Pratt'
+maintainer_email 'david@davideugenepratt.com'
 license 'All Rights Reserved'
 description 'Installs/Configures lxmpbox'
 long_description 'Installs/Configures lxmpbox'
-version '0.1.0'
+version 'v0.0.1'
 chef_version '>= 12.1' if respond_to?(:chef_version)
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/lxmpbox/issues'
-
-# The `source_url` points to the development repository for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/lxmpbox'
+issues_url 'https://github.com/davideugenepratt/lxmpbox/issues'
+source_url 'https://github.com/davideugenepratt/lxmpbox'
