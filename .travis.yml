@@ -1,20 +1,23 @@
-language: generic
-dist: trusty
-sudo: false
+rvm: 2.2
+
+sudo: required
+services: docker
 
 env:
-  global:
-  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
   matrix:
-  - COOKBOOK_PATH="cookbooks"
-  - COOKBOOK_PATH="community-cookbooks"
+  - INSTANCE=default-ubuntu-1404
+  - INSTANCE=default-centos-66
 
-addons:
-  apt:
-    sources:
-    - chef-stable-trusty
-    packages:
-    - chefdk
+before_install: curl -L https://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk -v 0.18.30
+
+install: chef exec bundle install
+
+# https://github.com/zuazo/kitchen-in-travis-native/issues/1#issuecomment-142455888
+before_script: sudo iptables -L DOCKER || sudo iptables -N DOCKER
+
+script:
+# Run test-kitchen with docker driver, for example:
+- KITCHEN_LOCAL_YAML=.kitchen.docker.yml chef exec bundle exec kitchen verify ${INSTANCE}
 
 script: cookstyle .
 

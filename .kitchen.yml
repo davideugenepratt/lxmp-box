@@ -20,6 +20,7 @@ suites:
   - name: default
     run_list:
       - recipe[lxmpbox::default]
+      - recipe[lxmpbox::apache]
     verifier:
       inspec_tests:
         - test/smoke/default
