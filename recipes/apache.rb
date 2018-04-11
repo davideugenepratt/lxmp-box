@@ -4,10 +4,24 @@
 #
 # Copyright:: 2018, David Eugene Pratt, All Rights Reserved.
 
-package "apache2" do
-  action :install
-end
+if node[:platform_family].include?("rhel")
 
-service "apache2" do
-  action [:enable, :start]
+  package 'httpd' do
+    action :install
+  end
+
+  service 'httpd' do
+    action [:enable, :start]
+  end
+
+else
+
+  package 'apache2' do
+    action :install
+  end
+
+  service 'apache2' do
+    action [:enable, :start]
+  end
+
 end

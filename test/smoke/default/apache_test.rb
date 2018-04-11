@@ -1,6 +1,6 @@
 # # encoding: utf-8
 
-# Inspec test for recipe .::apache
+# Inspec test for recipe lxmpbox::apache
 
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
@@ -12,7 +12,6 @@ unless os.windows?
   end
 end
 
-# This is an example test, replace it with your own test.
 describe port(80), :skip do
-  it { should_not be_listening }
+  it { should be_listening }
 end

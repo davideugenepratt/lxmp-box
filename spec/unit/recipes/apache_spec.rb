@@ -1,12 +1,12 @@
 #
-# Cookbook:: .
+# Cookbook:: lxmpbox
 # Spec:: default
 #
-# Copyright:: 2018, The Authors, All Rights Reserved.
+# Copyright:: 2018, David Eugene Pratt, All Rights Reserved.
 
 require 'spec_helper'
 
-describe '.::apache' do
+describe 'lxmpbox::apache' do
   context 'When all attributes are default, on an Ubuntu 16.04' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:
