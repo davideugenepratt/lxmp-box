@@ -25,3 +25,15 @@ else
   end
 
 end
+
+include_recipe 'firewall'
+
+firewall 'ufw'
+
+firewall_rule 'http' do
+  port 80
+end
+
+firewall_rule 'https' do
+  port 443
+end
