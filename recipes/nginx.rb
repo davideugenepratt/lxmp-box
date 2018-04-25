@@ -39,3 +39,7 @@ end
 firewall_rule 'https' do
   port 443
 end
+
+firewall_rule 'ssh' do
+  port 22
+end
