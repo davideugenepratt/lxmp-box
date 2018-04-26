@@ -15,8 +15,6 @@ if node['platform'] == 'redhat' || node['platform'] == 'centos'
 
   include_recipe 'yum-mysql-community::mysql' + mysqlversion.tr('.', '')
 
-  include_recipe 'selinux_policy'
-
   user 'mysql' do
     action :create
   end
