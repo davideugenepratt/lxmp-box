@@ -48,11 +48,7 @@ mysql_service 'default' do
   port mysqlport
   data_dir '/data'
   initial_root_password mysqlpassword
-  action [:create]
-end
-
-service 'mysql-default' do
-  action [:start]
+  action [:create,:start]
 end
 
 firewall_rule 'mysql' do
