@@ -4,20 +4,13 @@
 #
 # Copyright:: 2018, The Authors, All Rights Reserved.
 
-
-
-if node[:platform_family].include?("rhel")
-
+if node['platform'] == 'redhat' || node['platform'] == 'centos'
   include_recipe 'yum'
-
   package 'epel-release' do
     action :install
   end
-
 else
-
   include_recipe 'apt'
-
 end
 
 package 'nginx' do

@@ -9,15 +9,58 @@ mysqlip = node.read('lxmpbox', 'mysql', 'ip') ? node['lxmpbox']['mysql']['ip'] :
 mysqlport = node.read('lxmpbox', 'mysql', 'port') ? node['lxmpbox']['mysql']['port'] : '3306'
 mysqlversion = node.read('lxmpbox', 'mysql', 'version') ? node['lxmpbox']['mysql']['version'] : '5.7'
 
+include_recipe 'firewall'
+
+if node['platform'] == 'redhat' || node['platform'] == 'centos'
+
+  include_recipe 'yum-mysql-community::mysql' + mysqlversion.tr('.', '')
+
+  include_recipe 'selinux_policy'
+
+  user 'mysql' do
+    action :create
+  end
+
+  directory '/var/log/mysql-default' do
+    owner 'mysql'
+    group 'mysql'
+    mode '0755'
+    action :create
+  end
+
+  directory '/data' do
+    owner 'mysql'
+    group 'mysql'
+    mode '0755'
+    action :create
+  end
+
+  bash 'set mysql log context' do
+    code <<-EOH
+      chcon -R -u system_u -r object_r -t mysqld_db_t /var/log/mysql-default
+      chcon -R -u system_u -r object_r -t mysqld_db_t /data
+    EOH
+  end
+
+end
+
 mysql_service 'default' do
   version mysqlversion
   bind_address mysqlip
   port mysqlport
   data_dir '/data'
-  initial_root_password 'root'
-  action [:create, :start]
+  initial_root_password mysqlpassword
+  action [:create]
+end
+
+service 'mysql-default' do
+  action [:start]
 end
 
 firewall_rule 'mysql' do
   port 3306
+end
+
+firewall_rule 'ssh' do
+  port 22
 end

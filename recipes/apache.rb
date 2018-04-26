@@ -4,7 +4,7 @@
 #
 # Copyright:: 2018, David Eugene Pratt, All Rights Reserved.
 
-if node[:platform_family].include?("rhel")
+if node['platform'] == 'redhat' || node['platform'] == 'centos'
 
   package 'httpd' do
     action :install
