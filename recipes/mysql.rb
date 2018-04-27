@@ -12,9 +12,7 @@ mysqlversion = node.read('lxmpbox', 'mysql', 'version') ? node['lxmpbox']['mysql
 include_recipe 'firewall'
 
 if node['platform'] == 'redhat' || node['platform'] == 'centos'
-
   include_recipe 'yum-mysql-community::mysql' + mysqlversion.tr('.', '')
-
 end
 
 mysql_service 'default' do
@@ -26,11 +24,13 @@ mysql_service 'default' do
   action [:create]
 end
 
-bash 'set mysql log context' do
-  code <<-EOH
-    chcon -R -u system_u -r object_r -t mysqld_db_t /var/log/mysql-default
-    chcon -R -u system_u -r object_r -t mysqld_db_t /data
-  EOH
+if node['platform'] == 'redhat' || node['platform'] == 'centos'
+  bash 'set mysql log context' do
+    code <<-EOH
+      chcon -R -u system_u -r object_r -t mysqld_db_t /var/log/mysql-default
+      chcon -R -u system_u -r object_r -t mysqld_db_t /data
+    EOH
+  end
 end
 
 mysql_service 'default' do
