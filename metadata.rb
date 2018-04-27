@@ -7,7 +7,7 @@ long_description 'Installs/Configures lxmpbox'
 version '0.0.1'
 chef_version '>= 12.1' if respond_to?(:chef_version)
 supports 'ubuntu'
-
+supports 'centos'
 issues_url 'https://github.com/davideugenepratt/lxmpbox/issues'
 source_url 'https://github.com/davideugenepratt/lxmpbox'
 

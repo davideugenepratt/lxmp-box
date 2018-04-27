@@ -8,7 +8,7 @@ require 'spec_helper'
 
 describe 'lxmpbox::php' do
   before do
-    stub_command('$(which php) --version | grep 7.2').and_return('/usr/bin/php')
+    stub_command('$(which php) --version | grep 7.2.5').and_return('/usr/bin/php')
   end
 
   context 'When all attributes are default, on Ubuntu 16.04' do

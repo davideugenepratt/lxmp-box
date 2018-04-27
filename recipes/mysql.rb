@@ -15,31 +15,6 @@ if node['platform'] == 'redhat' || node['platform'] == 'centos'
 
   include_recipe 'yum-mysql-community::mysql' + mysqlversion.tr('.', '')
 
-  user 'mysql' do
-    action :create
-  end
-
-  directory '/var/log/mysql-default' do
-    owner 'mysql'
-    group 'mysql'
-    mode '0755'
-    action :create
-  end
-
-  directory '/data' do
-    owner 'mysql'
-    group 'mysql'
-    mode '0755'
-    action :create
-  end
-
-  bash 'set mysql log context' do
-    code <<-EOH
-      chcon -R -u system_u -r object_r -t mysqld_db_t /var/log/mysql-default
-      chcon -R -u system_u -r object_r -t mysqld_db_t /data
-    EOH
-  end
-
 end
 
 mysql_service 'default' do
@@ -48,7 +23,18 @@ mysql_service 'default' do
   port mysqlport
   data_dir '/data'
   initial_root_password mysqlpassword
-  action [:create,:start]
+  action [:create]
+end
+
+bash 'set mysql log context' do
+  code <<-EOH
+    chcon -R -u system_u -r object_r -t mysqld_db_t /var/log/mysql-default
+    chcon -R -u system_u -r object_r -t mysqld_db_t /data
+  EOH
+end
+
+mysql_service 'default' do
+  action :start
 end
 
 firewall_rule 'mysql' do
