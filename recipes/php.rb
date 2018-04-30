@@ -5,7 +5,7 @@
 # Copyright:: 2018, The Authors, All Rights Reserved.
 
 phpversion = node.read('lxmpbox', 'php', 'version') ? node['lxmpbox']['php']['version'] : '7.2.5'
-pearpackages = node.read('lxmpbox', 'php', 'pear_packages') ? node['lxmpbox']['php']['pear_packages'] : []
+extensions = node.read('lxmpbox', 'php', 'extensions') ? node['lxmpbox']['php']['extensions'] : []
 shasum = node['platform'] == 'ubuntu' || node['platform'] == 'debian' ? 'shasum -a 256' : 'sha256sum'
 
 if node['platform'] == 'ubuntu' || node['platform'] == 'debian'
@@ -28,7 +28,7 @@ node.override['php']['checksum'] = command_out.stdout
 
 include_recipe 'php::source'
 
-pearpackages.each_with_index do |req, _i|
+extensions.each_with_index do |req, _i|
   php_pear req do
     action :install
   end
