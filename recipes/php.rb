@@ -22,18 +22,27 @@ end
 
 node.override['php']['version'] = phpversion
 Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-command = "echo -n `curl -L -s http://us1.php.net/get/php-#{phpversion}.tar.gz/from/this/mirror | #{shasum}` | tr -cd '[[:alnum:]]'"
+command = "echo -n `curl -L -s #{node['php']['url']}/php-#{phpversion}.tar.gz/from/this/mirror | #{shasum}` | tr -cd '[[:alnum:]]'"
 command_out = shell_out(command)
 node.override['php']['checksum'] = command_out.stdout
 
 include_recipe 'php::source'
 
-extensions.each_with_index do |req, _i|
-  php_pear req do
-    action :install
-  end
+phpdirectives = []
+
+php_fpm_pool 'default' do
+  action :install
 end
 
-package 'Install Zip' do
-  package_name 'zip'
+extensions.each_with_index do |req, _i|
+  phpdirectives.push("extension=#{req}.so")
+  bash "pecl #{req}" do
+    if node['platform'] == 'ubuntu' || node['platform'] == 'debian'
+      code <<-EOH
+        pecl install #{req}
+        echo "extension=#{req}.so" >> #{node['php']['conf_dir']}/php.ini
+        echo "extension=#{req}.so" >> #{node['php']['conf_dir']}/../fpm/php.ini
+      EOH
+    end
+  end
 end
